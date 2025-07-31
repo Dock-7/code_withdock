@@ -1,0 +1,58 @@
+// Online C++ compiler to run C++ program online
+
+<-------------- BRUET FORCE SOLUTION ---------->
+<-------------- TO FIND Lowest Common Ancestor LCA( n1,n2) ---------->
+
+#include <bits/stdc++.h>
+using namespace std;
+
+    void dfs(int node,int parrent,vector<vector<int>>&adj,vector<int>&parrent_array){
+        parrent_array[node]=parrent;
+        
+        for(int child:adj[node]){
+            if(child!=parrent){
+                dfs(child,node,adj,parrent_array);
+            }
+        }
+    }
+vector<int> getParrent(int target_node, vector<int>&parrent_array){
+    vector<int>result;
+    
+    while(parrent_array[target_node]!=-1){
+        result.push_back(parrent_array[target_node]);
+        target_node=parrent_array[target_node];
+    }
+    return result;
+  }
+  
+  int findLCA(vector<int>nums1,vector<int>nums2){
+      for(int i=0;i<nums1.size();i++){
+          for(int j=0;j<nums2.size();j++){
+              if(nums1[i]==nums2[j]){
+          
+                  return nums1[i];
+                  
+              }
+          }
+         
+      }
+      return -1;
+  }
+
+int main() {
+    // Write C++ code here
+    
+    int n=9;
+    vector<vector<int>>adj={{1},{0,3,8},{4,5,7},{1,5},{2},{2,3,6},{5},{2},{1}};
+    vector<int>parrent_array(n,-1);
+    dfs(3,-1,adj,parrent_array);
+   
+   vector<int> a1 = getParrent(8, parrent_array);
+   vector<int> a2 = getParrent(7, parrent_array);
+   
+  int result=findLCA(a1,a2);
+  cout<<result;
+
+    return 0;
+}   
+    
