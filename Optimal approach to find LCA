@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}  // Constructor fixed
+};
+
+// Function to find LCA of two nodes in a binary tree
+TreeNode* findLCA(TreeNode* root, TreeNode* p1, TreeNode* p2) {
+    if (root == NULL) return NULL;
+
+    if (root == p1 || root == p2) return root;
+
+    TreeNode* left = findLCA(root->left, p1, p2);
+    TreeNode* right = findLCA(root->right, p1, p2);
+
+    if (left != NULL && right != NULL) return root;
+
+    return (left != NULL) ? left : right;
+}
+
+int main() {
+    // Constructing the following binary tree:
+    //         3
+    //       /   \
+    //      5     1
+    //     / \   / \
+    //    6   2 0   8
+    //       / \
+    //      7   4
+
+    TreeNode* root = new TreeNode(3);
+    root->left = new TreeNode(5);
+    root->right = new TreeNode(1);
+    root->left->left = new TreeNode(6);
+    root->left->right = new TreeNode(2);
+    root->right->left = new TreeNode(0);
+    root->right->right = new TreeNode(8);
+    root->left->right->left = new TreeNode(7);
+    root->left->right->right = new TreeNode(4);
+
+    TreeNode* p1 = root->left;           // Node 5
+    TreeNode* p2 = root->left->right;    // Node 2
+
+    TreeNode* lca = findLCA(root, p1, p2);
+    if (lca) {
+        cout << "Lowest Common Ancestor of " << p1->val << " and " << p2->val << " is: " << lca->val << endl;
+    } else {
+        cout << "LCA not found.\n";
+    }
+
+    return 0;
+}
