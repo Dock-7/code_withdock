@@ -1,0 +1,78 @@
+<---------------------DFS....and....BFS---------------->
+#include <bits/stdc++.h>
+using namespace std;
+
+void dfs(int node,vector<vector<int>>&adj,vector<bool>&visited,vector<int>&result){
+    visited[node]=true;
+    result.push_back(node);
+    for(int adjNode:adj[node]){
+        if(!visited[adjNode]){
+            dfs(adjNode,adj,visited,result);
+        }
+    }
+}
+
+void bfs(int node,vector<vector<int>>&adj,vector<bool>&visited,vector<int>&result){
+    queue<int>q;
+    visited[node]=true;
+    q.push(node);
+    
+    while(!q.empty()){
+        int node=q.front();
+        q.pop();
+        result.push_back(node);
+        
+        for(int adjNode:adj[node]){
+            if(!visited[adjNode]){
+                visited[adjNode]=true;
+                q.push(adjNode);
+            }
+        }
+    }
+    
+}
+vector<int> BFS(vector<vector<int>>&adj,int V){
+    vector<bool>visited(V,false);
+    vector<int>result;
+    bfs(1,adj,visited,result);
+    return result;
+    
+}
+vector<int> DFS(vector<vector<int>>&adj,int V){
+    vector<bool>visited(V,false);
+    vector<int>result;
+    dfs(1,adj,visited,result);
+    return result;
+    
+}
+
+int main() {
+     int V=6;
+     vector<bool>visited(V+1,false);
+     vector<vector<int>>adj(V+1);
+         adj[1]={2,3}; //1
+         adj[2]={1,4};   //2
+         adj[3]={1,4,5,6};   //3
+         adj[4]={2,3,5}; //4
+         adj[5]={3,4,6};   //5
+         adj[6]={3,5};
+    
+    vector<int>ansb=BFS(adj,V);
+    vector<int>ansd=DFS(adj,V);
+    
+    for(int x:ansb) cout<<x<<" ";
+    for(int x:ansd) cout<<x<<" ";
+
+    return 0;
+};
+
+
+
+
+
+
+
+
+
+    
+    
