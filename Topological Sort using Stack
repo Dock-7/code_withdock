@@ -1,3 +1,5 @@
+<-----------DFS______:Topological sort-using Stack------------->
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -57,3 +59,63 @@ int main() {
 
     return 0;
 }
+
+<-----------BFS______:Topological sort-using Queue------------>
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+vector<int> TopologicalSortBFS(int V, vector<vector<int>>& edges) {
+    
+    unordered_map<int, vector<int>> adj;
+    for (auto& edge : edges) {
+        int u = edge[0];
+        int v = edge[1];
+        adj[u].push_back(v);
+    }
+   
+   vector<int>result;
+    
+    queue<int>q;
+    vector<int>indegree(V,0);
+    for(auto &[node,neighbour]:adj){
+        for(int adjNode:neighbour){
+        if(indegree[adjNode]==0) q.push(adjNode);
+    }
+    }    
+    while(!q.empty()){
+        int node=q.front();
+        q.pop();
+        
+        result.push_back(node);
+        
+        for(int adjNode:adj[node]){
+            indegree[adjNode]--;
+            if(indegree[adjNode]==0) q.push(adjNode);
+        }
+    }
+    if(result.size()<V){
+    cout << "Cycle detected. Topological sort not possible.\n";
+      return {0};
+    }
+    return result;
+}
+
+int main() {
+    int V = 5;
+    vector<vector<int>> edges = {
+        {0, 1},
+        {1, 2},
+        {2, 3},
+        {4, 3}
+    };
+
+    vector<int> ans = TopologicalSortBFS(V, edges);
+    for (int x : ans)
+        cout << x << " ";
+
+    return 0;
+}
+
