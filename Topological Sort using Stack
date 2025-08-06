@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void dfs(int node, unordered_map<int, vector<int>>& adj, vector<bool>& visited, stack<int>& st) {
+    visited[node] = true;
+
+    for (int adjNode : adj[node]) {
+        if (!visited[adjNode]) {
+            dfs(adjNode, adj, visited, st);
+        }
+    }
+
+    st.push(node);  // push after visiting all descendants
+}
+
+vector<int> TopologicalSort(int V, vector<vector<int>>& edges) {
+    unordered_map<int, vector<int>> adj;
+    vector<bool> visited(V, false);
+    vector<int> result;
+    stack<int> st;
+
+    // Construct the adjacency list
+    for (auto& edge : edges) {
+        int u = edge[0];
+        int v = edge[1];
+        adj[u].push_back(v);
+    }
+
+    // Call DFS on all unvisited nodes
+    for (int i = 0; i < V; i++) {
+        if (!visited[i]) {
+            dfs(i, adj, visited, st);
+        }
+    }
+
+    // Collect the topological order from the stack
+    while (!st.empty()) {
+        result.push_back(st.top());
+        st.pop();
+    }
+
+    return result;
+}
+
+int main() {
+    int V = 5;
+    vector<vector<int>> edges = {
+        {0, 1},
+        {1, 2},
+        {2, 3},
+        {4, 3}
+    };
+
+    vector<int> ans = TopologicalSort(V, edges);
+    for (int x : ans)
+        cout << x << " ";
+
+    return 0;
+}
